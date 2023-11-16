@@ -1,0 +1,67 @@
+import requests
+import json
+
+# Authentication API
+auth_url = "https://qa2.sunbasedata.com/sunbase/portal/api/assignment_auth.jsp"
+auth_data = {
+    "login_id": "test@sunbasedata.com",
+    "password": "Test@123"
+}
+auth_headers = {
+    "Content-Type": "application/json"
+}
+auth_response = requests.post(auth_url, data=json.dumps(auth_data), headers=auth_headers)
+auth_token = auth_response.json()["token"]
+
+# Create a new Customer API
+create_url = "https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp"
+create_headers = {
+    "Authorization": f"Bearer {auth_token}",
+    "Content-Type": "application/json"
+}
+create_data = {
+    "first_name": "Jane",
+    "last_name": "Doe",
+    "street": "Elvnu Street",
+    "address": "H no 2 ",
+    "city": "Delhi",
+    "state": "Delhi",
+    "email": "sam@gmail.com",
+    "phone": "12345678"
+}
+create_response = requests.post(create_url, data=json.dumps(create_data), headers=create_headers)
+
+# Get customer list API
+get_url = "https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp"
+get_headers = {
+    "Authorization": f"Bearer {auth_token}"
+}
+get_params = {
+    "cmd": "get_customer_list"
+}
+get_response = requests.get(get_url, params=get_params, headers=get_headers)
+get_customers = get_response.json()
+
+# Delete a customer API
+delete_url = "https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp"
+delete_headers = {
+    "Authorization": f"Bearer {auth_token}",
+    "Content-Type": "application/json"
+}
+delete_params = {
+    "cmd": "delete",
+    "uuid": "uuid of a specific customer"
+}
+delete_response = requests.post(delete_url, params=delete_params, headers=delete_headers)
+
+# Update a customer API
+update_url = "https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp"
+update_headers = {
+    "Authorization": f"Bearer {auth_token}",
+    "Content-Type": "application/json"
+}
+update_params = {
+    "cmd": "update",
+    "uuid": "uuid of a specific customer"
+}
+update_response = requests.post(update_url, params=update_params, headers=update_headers)
